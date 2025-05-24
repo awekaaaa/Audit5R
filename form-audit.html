@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Form Audit Area Kerja</title>
+</head>
+<body>
+  <h2>Form Audit Kebersihan & Kerapihan Area Kerja</h2>
+
+  <form id="audit-form">
+    <label>Ruangan:</label><br>
+    <input type="text" name="ruangan" required><br><br>
+
+    <label>Inisial Auditor:</label><br>
+    <input type="text" name="auditor" required><br><br>
+
+    <label>Inisial PIC Ruangan:</label><br>
+    <input type="text" name="pic" required><br><br>
+
+    <h3>A. Kebersihan & Kerapihan Area Kerja</h3>
+
+    <!-- 1.1 Dokumen -->
+    <label>1.1 Dokumen:</label><br>
+    <input type="text" name="a" required><br><br>
+
+    <!-- 1.2 Material -->
+    <label>1.2 Material:</label><br>
+    <input type="text" name="b" required><br><br>
+
+    <!-- 1.3 Lemari 5R -->
+    <label>1.3 Lemari 5R & tempat penyimpanan tools:</label><br>
+    <input type="text" name="c" required><br><br>
+
+    <!-- 1.4 Bawah lemari -->
+    <label>1.4 Bawah & belakang lemari penyimpanan:</label><br>
+    <input type="text" name="d" required><br><br>
+
+    <!-- 1.5 Sudut ruangan -->
+    <label>1.5 Sudut ruangan, sela panel listrik:</label><br>
+    <input type="text" name="e" required><br><br>
+
+    <!-- 1.6 Permukaan luar -->
+    <label>1.6 Permukaan luar dan sela-sela lemari, meja, pintu:</label><br>
+    <input type="text" name="f" required><br><br>
+
+    <!-- 1.7 Low return -->
+    <label>1.7 Low return / Filter Low Return:</label><br>
+    <input type="text" name="g" required><br><br>
+
+    <!-- 1.8 Exhaust -->
+    <label>1.8 Exhaust, floor drain:</label><br>
+    <input type="text" name="h" required><br><br>
+
+    <button type="submit">Kirim Audit</button>
+  </form>
+
+  <p id="response"></p>
+
+  <script>
+    const form = document.getElementById('audit-form');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const data = {
+        timestamp: new Date().toLocaleString(),
+        ruangan: form.ruangan.value,
+        auditor: form.auditor.value,
+        pic: form.pic.value,
+        dokumen: form.dokumen.value,
+        material: form.material.value,
+        lemari5r: form.lemari5r.value,
+        bawah_lemari: form.bawah_lemari.value,
+        sudut: form.sudut.value,
+        permukaan: form.permukaan.value,
+        lowreturn: form.lowreturn.value,
+        exhaust: form.exhaust.value
+      };
+
+      const response = await fetch('https://script.google.com/macros/s/AKfycbxentRZHYLddOGOuNaut9oIbxwHXd2yAVgc9xKC6w/dev', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      const result = await response.json();
+      document.getElementById('response').textContent =
+        result.result === 'Success' ? 'Data berhasil dikirim!' : 'Terjadi kesalahan.';
+      
+      form.reset();
+    });
+  </script>
+</body>
+</html>
